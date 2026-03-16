@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhà sách Ngô Bảo – Demo có khung A4 & nút tải</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Be Vietnam Pro',Arial,sans-serif;background:#f7f8fc;color:#1f2937}
+:root{
+  --red:#cf1717;
+  --red-dark:#ad1212;
+  --yellow:#ffd84d;
+  --blue:#1f5eff;
+  --green:#16a34a;
+  --line:#e5e7eb;
+  --ink:#1f2937;
+}
+.banner{
+  position:relative; min-height:260px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,var(--red),var(--red-dark)); overflow:hidden;
+}
+.banner::before,.banner::after{
+  content:""; position:absolute; top:0; bottom:0; width:28%; opacity:.14; background-size:cover; background-repeat:no-repeat;
+}
+.banner::before{left:0;background-image:url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80');background-position:left center}
+.banner::after{right:0;background-image:url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80');background-position:right center}
+.banner-inner{position:relative;text-align:center;padding:18px 20px}
+.banner h1{margin:0;color:var(--yellow);font-size:clamp(38px,6vw,68px);font-weight:900;letter-spacing:2px}
+.banner p{margin:8px 0 0;color:#fff;font-size:20px;font-weight:700}
+.hero-buttons{margin-top:18px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.hero-buttons button{border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.btn1{background:var(--yellow);color:#111827}.btn2{background:#fff;color:var(--red)}
+.tabs{
+  max-width:1120px; margin:18px auto 0; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:0 20px;
+}
+.tab{
+  background:linear-gradient(180deg,#ffe88c,#ffd84d); color:var(--blue); padding:13px 20px; border-radius:12px;
+  font-weight:900; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.08); border:1px solid #f0c92f;
+}
+.tab.active{background:linear-gradient(180deg,#ffd84d,#ffc72c)}
+.container{max-width:1120px;margin:auto;padding:22px 20px 60px}
+.section{display:none}.section.active{display:block}
+.section-title{font-size:28px;font-weight:900;margin:0 0 10px}
+.section-lead{color:#4b5563;margin:0 0 20px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.card{
+  background:#fff; border-radius:18px; padding:15px; box-shadow:0 8px 18px rgba(0,0,0,.08);
+  border:1px solid var(--line);
+}
+.a4{
+  aspect-ratio:210 / 297; border-radius:10px; margin-bottom:12px; position:relative; overflow:hidden;
+  background:
+    linear-gradient(135deg,#ffffff 0%,#fff7db 100%);
+  border:1px solid #d7dce5;
+  box-shadow:inset 0 0 0 8px #fff;
+}
+.a4::before{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.0),rgba(255,255,255,.0)),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(31,94,255,.06) 23px 24px);
+}
+.a4 .paper-head{
+  position:absolute; left:14px; right:14px; top:14px; height:42px; border-radius:8px;
+  background:linear-gradient(90deg,var(--red),#ef4444);
+}
+.a4 .paper-title{
+  position:absolute; left:18px; right:18px; top:68px; font-size:15px; line-height:1.35; font-weight:900; color:#0f172a;
+}
+.a4 .paper-lines{
+  position:absolute; left:18px; right:18px; top:120px; bottom:18px;
+  background:
+    repeating-linear-gradient(180deg, rgba(31,94,255,.16) 0 2px, transparent 2px 18px);
+  opacity:.55;
+}
+.badge{
+  position:absolute; right:12px; bottom:12px; background:var(--yellow); color:#111827; font-weight:900;
+  font-size:12px; border-radius:999px; padding:6px 10px; box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+.title{font-size:19px;font-weight:900;margin:0 0 8px;line-height:1.4;min-height:3em}
+.meta{font-size:14px;line-height:1.7;color:#374151}
+.meta div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed #eceff5}
+.price{font-size:22px;font-weight:900;color:var(--red);margin:12px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{
+  flex:1 1 120px; border:none; padding:10px 12px; border-radius:10px; font-weight:900; cursor:pointer;
+}
+.preview{background:var(--blue);color:#fff}
+.download{background:var(--green);color:#fff}
+.buy{background:var(--yellow);color:#111827}
+.class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.class-card{
+  background:#fff; border-radius:16px; padding:14px; box-shadow:0 6px 14px rgba(0,0,0,.07); border:1px solid var(--line);
+}
+.class-name{
+  display:inline-block; margin-bottom:10px; background:#eef2ff; color:#1e3a8a; font-weight:900; padding:6px 10px; border-radius:999px;
+}
+.contact-box{
+  background:#fff; padding:20px; border-radius:16px; box-shadow:0 6px 16px rgba(0,0,0,.08); line-height:1.9; border:1px solid var(--line)
+}
+.footer{margin-top:32px;background:#111827;color:#ddd;text-align:center;padding:18px}
+.notice{
+  background:linear-gradient(90deg,#fff7cc,#ffe88c); border:1px solid #f5d74f; border-radius:14px; padding:14px 16px;
+  color:#7c2d12; font-weight:700; margin-bottom:20px;
+}
+@media (max-width:560px){
+  .banner{min-height:240px}
+  .title{min-height:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner-inner">
+    <h1>NHÀ SÁCH NGÔ BẢO</h1>
+    <p>Tài liệu kỹ thuật – Đề thi – Tài liệu học tập chất lượng</p>
+    <div class="hero-buttons">
+      <button class="btn1" onclick="showTab('books')">Xem sách kỹ thuật</button>
+      <button class="btn2" onclick="showTab('free')">Tài liệu miễn phí</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="home" onclick="showTab('home')">Trang chủ</div>
+  <div class="tab" data-tab="books" onclick="showTab('books')">Sách kỹ thuật</div>
+  <div class="tab" data-tab="exam" onclick="showTab('exam')">Kho đề</div>
+  <div class="tab" data-tab="class" onclick="showTab('class')">Lớp 1–12</div>
+  <div class="tab" data-tab="free" onclick="showTab('free')">Tài liệu miễn phí</div>
+  <div class="tab" data-tab="contact" onclick="showTab('contact')">Liên hệ</div>
+</div>
+
+<div class="container">
+  <section id="home" class="section active">
+    <div class="notice">
+      Bản này tôi đã chèn <b>khung ảnh giấy A4 đứng</b> vào tất cả khu: sách, kho đề, lớp 1–12 và tài liệu miễn phí,
+      đồng thời thêm <b>nút Tải về</b> để bạn hình dung đúng website thật.
+    </div>
+    <h2 class="section-title">Chào mừng đến với Nhà sách Ngô Bảo</h2>
+    <p class="section-lead">
+      Nơi cung cấp tài liệu kỹ thuật, bộ đề thi và tài liệu học tập được trình bày rõ ràng, dễ học, dễ tải về và thuận tiện trên cả điện thoại lẫn máy tính.
+    </p>
+  </section>
+
+  <section id="books" class="section">
+    <h2 class="section-title">Sách kỹ thuật</h2>
+    <p class="section-lead">Khung ảnh dưới đây đang là tỷ lệ giấy A4 đứng. Sách PDF, bìa tài liệu hay trang xem thử đều có thể đặt vừa trong khung này.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head"></div>
+          <div class="paper-title">SỨC BỀN VẬT LIỆU<br>TẬP 1</div>
+          <div class="paper-lines"></div>
+          <div class="badge">A4 Preview</div>
+        </div>
+        <div class="title">Sức bền vật liệu tập 1</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>320</span></div>
+          <div><span>Dung lượng</span><span>45MB</span></div>
+          <div><span>Giá</span><span>199.000đ</span></div>
+        </div>
+        <div class="price">199.000đ</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Mua PDF</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#1f5eff,#60a5fa)"></div>
+          <div class="paper-title">CƠ HỌC<br>KỸ THUẬT</div>
+          <div class="paper-lines"></div>
+          <div class="badge">A4 Preview</div>
+        </div>
+        <div class="title">Cơ học kỹ thuật</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>280</span></div>
+          <div><span>Dung lượng</span><span>40MB</span></div>
+          <div><span>Giá</span><span>169.000đ</span></div>
+        </div>
+        <div class="price">169.000đ</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Mua PDF</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="exam" class="section">
+    <h2 class="section-title">Kho đề</h2>
+    <p class="section-lead">Kho đề cũng có khung ảnh A4 riêng. Ảnh bìa đề, ảnh trang đầu đề thi hay ảnh mô tả đều đặt được rất vừa.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#16a34a,#4ade80)"></div>
+          <div class="paper-title">ĐỀ THI TOÁN 12<br>ÔN TẬP HỌC KỲ</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Đề thi</div>
+        </div>
+        <div class="title">Đề thi Toán 12 – Ôn tập học kỳ</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>18</span></div>
+          <div><span>Dung lượng</span><span>3MB</span></div>
+          <div><span>Giá</span><span>29.000đ</span></div>
+        </div>
+        <div class="price">29.000đ</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Mua đề</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#f59e0b,#facc15)"></div>
+          <div class="paper-title">ĐỀ THI VẬT LÝ 10</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Đề thi</div>
+        </div>
+        <div class="title">Đề thi Vật lý 10</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>12</span></div>
+          <div><span>Dung lượng</span><span>2MB</span></div>
+          <div><span>Giá</span><span>Miễn phí</span></div>
+        </div>
+        <div class="price">Miễn phí</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Tải ngay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="class" class="section">
+    <h2 class="section-title">Lớp 1–12</h2>
+    <p class="section-lead">Ngay cả mục Lớp 1–12 cũng có thể có khung ảnh riêng. Mỗi lớp có thể hiện ảnh bìa tài liệu hoặc trang đầu A4 như dưới đây.</p>
+    <div class="class-grid">
+      <div class="class-card">
+        <div class="class-name">Lớp 1</div>
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#ef4444,#fb7185)"></div>
+          <div class="paper-title">TÀI LIỆU TOÁN<br>LỚP 1</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Lớp 1</div>
+        </div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-name">Lớp 6</div>
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#1f5eff,#60a5fa)"></div>
+          <div class="paper-title">BỘ ĐỀ TOÁN<br>LỚP 6</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Lớp 6</div>
+        </div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-name">Lớp 12</div>
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#16a34a,#4ade80)"></div>
+          <div class="paper-title">ÔN THI TỐT NGHIỆP<br>LỚP 12</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Lớp 12</div>
+        </div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="free" class="section">
+    <h2 class="section-title">Tài liệu miễn phí</h2>
+    <p class="section-lead">Tài liệu miễn phí cũng có khung ảnh A4 riêng và có thể gắn nút tải về như tài liệu thật.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#9333ea,#c084fc)"></div>
+          <div class="paper-title">PHIẾU BÀI TẬP<br>VẬT LÝ 10</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Free</div>
+        </div>
+        <div class="title">Phiếu bài tập Vật lý 10</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>10</span></div>
+          <div><span>Dung lượng</span><span>2MB</span></div>
+          <div><span>Giá</span><span>Miễn phí</span></div>
+        </div>
+        <div class="price">Miễn phí</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Tải ngay</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="a4">
+          <div class="paper-head" style="background:linear-gradient(90deg,#f59e0b,#facc15)"></div>
+          <div class="paper-title">10 ĐỀ ÔN TẬP<br>TOÁN 12</div>
+          <div class="paper-lines"></div>
+          <div class="badge">Free</div>
+        </div>
+        <div class="title">10 đề ôn tập Toán 12</div>
+        <div class="meta">
+          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
+          <div><span>Số trang</span><span>26</span></div>
+          <div><span>Dung lượng</span><span>4MB</span></div>
+          <div><span>Giá</span><span>Miễn phí</span></div>
+        </div>
+        <div class="price">Miễn phí</div>
+        <div class="actions">
+          <button class="preview">Xem thử</button>
+          <button class="download">Tải về</button>
+          <button class="buy">Tải ngay</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2 class="section-title">Liên hệ</h2>
+    <div class="contact-box">
+      <b>SĐT / Zalo:</b> 0903852554<br>
+      <b>Email:</b> ngobaobk@gmail.com<br>
+      <b>BIDV:</b> 8894831012
+    </div>
+  </section>
+</div>
+
+<div class="footer">Nhà sách Ngô Bảo – Tài liệu kỹ thuật & đề thi</div>
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('[data-tab="'+id+'"]').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
