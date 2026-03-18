@@ -407,6 +407,51 @@
     }
     .current-preview img{width:100%;height:100%;object-fit:cover;display:block}
     .current-preview span{padding:8px;text-align:center;color:#8a5b00;font-size:12px;font-weight:800;line-height:1.4}
+
+    .upload-inline{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+    .upload-inline input[type="file"]{
+      flex:1 1 260px;
+      min-width:220px;
+      padding:10px 12px;
+      border:1px dashed #d3b46d;
+      border-radius:14px;
+      background:#fffdf7;
+    }
+    .upload-help{
+      margin-top:8px;
+      color:#6b7280;
+      font-size:13px;
+      line-height:1.5;
+    }
+    .blob-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#eef7ff;
+      color:#1250a6;
+      font-weight:800;
+      font-size:13px;
+      border:1px solid #cfe1ff;
+      margin-top:8px;
+    }
+    .remote-note{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#fff8e8;
+      border:1px solid #f0d18a;
+      color:#7a5200;
+      line-height:1.6;
+      font-size:14px;
+    }
     .preview-modal-image{
       width:100%;
       max-height:min(78vh,900px);
@@ -820,7 +865,7 @@ Chất lượng</b></div>
       <div class="admin-header">
         <div>
           <h2>Quản trị</h2>
-          <div class="sub">Giữ nguyên toàn bộ cơ chế cũ, đồng thời nâng cấp thêm sao lưu dữ liệu, đổi mật khẩu, xem ảnh bìa hiện tại và lọc nhanh bài đã đăng. Mỗi danh mục vẫn có 15 ô riêng, không bị đè nhau.</div>
+          <div class="sub">Giữ nguyên toàn bộ cơ chế cũ, đồng thời nâng cấp thêm lưu dữ liệu thật qua Vercel Blob miễn phí, chọn ảnh trực tiếp từ máy tính, sao lưu dữ liệu, đổi mật khẩu và lọc nhanh bài đã đăng. Mỗi danh mục vẫn có 15 ô riêng, không bị đè nhau.</div><div class="blob-badge">Vercel Blob miễn phí • Ảnh tải lên sẽ lên web thật cho khách xem</div>
         </div>
         <button type="button" class="close" onclick="closeAdminPanel()">Thoát quản trị</button>
       </div>
@@ -862,21 +907,38 @@ Chất lượng</b></div>
               <textarea id="postDesc" placeholder="Viết mô tả ngắn gọn, rõ ràng, hấp dẫn"></textarea>
             </label>
             <label class="full">
-              Tên file ảnh bìa trong thư mục images
-              <input id="postCoverUrl" type="text" placeholder="vd: bia-sach.jpg hoặc images/bia-sach.jpg">
+              Ảnh bìa
+              <input id="postCoverUrl" type="text" placeholder="Có thể dán link ảnh, hoặc để hệ thống tự điền sau khi bạn chọn ảnh từ máy">
+              <div class="upload-inline">
+                <input id="postCoverFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <button type="button" class="btn btn-secondary" onclick="uploadCoverImage()">Tải ảnh bìa từ máy lên web</button>
+              </div>
+              <div class="upload-help">Bạn có thể chọn ảnh từ máy tính. Hệ thống sẽ tải ảnh đó lên Vercel Blob rồi tự điền link ảnh, không cần gõ tên file nữa.</div>
               <div id="currentCover" class="current-cover"><span>Chưa có ảnh bìa</span></div>
             </label>
             <label>
-              Tên file ảnh xem trước 1 trong thư mục images
-              <input id="postPreviewUrl1" type="text" placeholder="vd: xemtruoc-1.jpg hoặc images/xemtruoc-1.jpg">
+              Ảnh xem trước 1
+              <input id="postPreviewUrl1" type="text" placeholder="Có thể dán link ảnh, hoặc để hệ thống tự điền sau khi bạn chọn ảnh">
+              <div class="upload-inline">
+                <input id="postPreviewFile1" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <button type="button" class="btn btn-light" onclick="uploadPreviewImage(1)">Tải ảnh 1 lên web</button>
+              </div>
             </label>
             <label>
-              Tên file ảnh xem trước 2 trong thư mục images
-              <input id="postPreviewUrl2" type="text" placeholder="vd: xemtruoc-2.jpg hoặc images/xemtruoc-2.jpg">
+              Ảnh xem trước 2
+              <input id="postPreviewUrl2" type="text" placeholder="Có thể dán link ảnh, hoặc để hệ thống tự điền sau khi bạn chọn ảnh">
+              <div class="upload-inline">
+                <input id="postPreviewFile2" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <button type="button" class="btn btn-light" onclick="uploadPreviewImage(2)">Tải ảnh 2 lên web</button>
+              </div>
             </label>
             <label>
-              Tên file ảnh xem trước 3 trong thư mục images
-              <input id="postPreviewUrl3" type="text" placeholder="vd: xemtruoc-3.jpg hoặc images/xemtruoc-3.jpg">
+              Ảnh xem trước 3
+              <input id="postPreviewUrl3" type="text" placeholder="Có thể dán link ảnh, hoặc để hệ thống tự điền sau khi bạn chọn ảnh">
+              <div class="upload-inline">
+                <input id="postPreviewFile3" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <button type="button" class="btn btn-light" onclick="uploadPreviewImage(3)">Tải ảnh 3 lên web</button>
+              </div>
             </label>
             <div id="currentPreviewGrid" class="current-preview-grid full"></div>
             <label class="full">
@@ -893,7 +955,7 @@ Chất lượng</b></div>
             <button type="button" class="btn btn-light" onclick="clearCurrentSlot()">Xóa nội dung ô này</button>
             <button type="button" class="btn btn-secondary" onclick="duplicateCurrentToEmptySlot()">Nhân bản sang ô trống</button>
           </div>
-          <div class="hint">Ô chưa có nội dung sẽ không hiện ngoài trang khách. Ảnh bìa và 3 ảnh xem trước nay lấy từ thư mục images đặt cùng web. Bạn chỉ cần gõ tên file ảnh hoặc đường dẫn images/tên-file.jpg.</div>
+          <div class="hint">Ô chưa có nội dung sẽ không hiện ngoài trang khách. Bạn có thể dùng cách cũ bằng thư mục images, hoặc cách mới là chọn ảnh trực tiếp từ máy để tải lên Vercel Blob.</div><div class="remote-note">Lần này dữ liệu sách và thông tin liên hệ sẽ được lưu qua API trên Vercel. Ảnh tải từ máy sẽ lên web thật cho khách xem. Riêng mật khẩu quản trị vẫn giữ theo trình duyệt này để tránh lưu công khai.</div>
 
           <div class="backup-box">
             <strong>Sao lưu & phục hồi dữ liệu</strong>
@@ -1010,8 +1072,8 @@ Chất lượng</b></div>
     const SLOTS_PER_CATEGORY = 15;
 
     const REMOTE_SYNC = {
-      enabled: false,
-      endpoint: '',
+      enabled: true,
+      endpoint: '/api/store',
       apiKey: '',
       note: 'Bật khi bạn có backend thật như Supabase, Firebase, JSONBin hoặc Cloudflare Worker.'
     };
@@ -1110,7 +1172,6 @@ Chất lượng</b></div>
 
     function setAdminPassword(value){
       localStorage.setItem(PASS_KEY, value);
-      pushRemoteData();
     }
 
     async function pullRemoteData(){
@@ -1132,9 +1193,7 @@ Chất lượng</b></div>
           if(remote.contact && typeof remote.contact === 'object'){
             localStorage.setItem(CONTACT_KEY, JSON.stringify({...defaultContact, ...remote.contact}));
           }
-          if(remote.password && typeof remote.password === 'string'){
-            localStorage.setItem(PASS_KEY, remote.password);
-          }
+
           return true;
         }
       }catch(error){
@@ -1149,7 +1208,6 @@ Chất lượng</b></div>
         const payload = {
           slots,
           contact,
-          password: getAdminPassword(),
           updatedAt: new Date().toISOString()
         };
         const response = await fetch(REMOTE_SYNC.endpoint, {
@@ -1327,7 +1385,7 @@ Chất lượng</b></div>
             ${previewStrip}
             <div class="price">${escapeHtml(item.price || 'Liên hệ')}</div>
             <div class="actions">
-              <button type="button" class="btn btn-primary" onclick="openBuyModal('${escapeJs(item.category)}', ${item.slot})">Mua PDF</button>
+              <button type="button" class="btn btn-primary" onclick="openBuyModal('${escapeJs(item.category)}', ${item.slot})">${item.fileLink ? 'Tải PDF' : 'Liên hệ mua sách'}</button>
               ${item.previewLink ? `<a class="btn btn-secondary" href="${item.previewLink}" target="_blank" rel="noopener">Xem thử</a>` : ''}
             </div>
           </div>
@@ -1340,9 +1398,13 @@ Chất lượng</b></div>
       if(!item || !item.title.trim()) return;
       const phoneDigits = (contact.phone || '').replace(/\D/g,'');
       const zaloLink = phoneDigits ? `https://zalo.me/${phoneDigits}` : '#';
-      const emailSubject = encodeURIComponent('Mua tài liệu: ' + item.title);
-      const emailBody = encodeURIComponent(`Tôi đã chuyển khoản mua tài liệu: ${item.title}. Vui lòng gửi file giúp tôi.`);
-      document.getElementById('buyContent').innerHTML = `
+      const emailSubject = encodeURIComponent((item.fileLink ? 'Mua tài liệu PDF: ' : 'Mua sách giấy: ') + item.title);
+      const emailBody = encodeURIComponent(item.fileLink
+        ? `Tôi đã chuyển khoản mua tài liệu: ${item.title}. Vui lòng gửi file giúp tôi.`
+        : `Tôi muốn đặt mua sách giấy: ${item.title}. Vui lòng tư vấn giúp tôi.`);
+      const isPdf = !!(item.fileLink || '').trim();
+
+      document.getElementById('buyContent').innerHTML = isPdf ? `
         <div class="bank-box">
           <div class="bank-row"><strong>Tài liệu:</strong> ${escapeHtml(item.title)}</div>
           <div class="bank-row"><strong>Giá:</strong> ${escapeHtml(item.price || 'Liên hệ')}</div>
@@ -1351,11 +1413,23 @@ Chất lượng</b></div>
           <div class="bank-row"><strong>Chủ tài khoản:</strong> ${escapeHtml(contact.bankOwner)}</div>
           <div class="bank-row"><strong>Nội dung chuyển khoản:</strong> MUA ${escapeHtml(item.title).toUpperCase().slice(0,36)}</div>
         </div>
-        <div class="note">Sau khi chuyển khoản, vui lòng gửi biên lai qua Zalo hoặc Email để nhận file. Cơ chế này được giữ nguyên như file gốc của bạn.</div>
+        <div class="note">Đây là tài liệu có file. Sau khi chuyển khoản, khách có thể liên hệ qua Zalo hoặc Email để nhận hỗ trợ, hoặc bấm tải file ngay nếu anh/chị đã gắn link tải.</div>
         <div class="contact-buttons">
           <button class="btn btn-gold" type="button" onclick="copyBankInfo('${escapeJs(item.title)}')">Sao chép thông tin CK</button>
-          <a class="btn btn-primary" href="${zaloLink}" target="_blank" rel="noopener">Gửi biên lai qua Zalo</a>
-          <a class="btn btn-secondary" href="mailto:${contact.email}?subject=${emailSubject}&body=${emailBody}">Gửi biên lai qua Email</a>
+          <a class="btn btn-primary" href="${item.fileLink}" target="_blank" rel="noopener">Tải PDF ngay</a>
+          <a class="btn btn-secondary" href="${zaloLink}" target="_blank" rel="noopener">Liên hệ qua Zalo</a>
+        </div>
+      ` : `
+        <div class="bank-box">
+          <div class="bank-row"><strong>Sách:</strong> ${escapeHtml(item.title)}</div>
+          <div class="bank-row"><strong>Giá:</strong> ${escapeHtml(item.price || 'Liên hệ')}</div>
+          <div class="bank-row"><strong>Liên hệ Zalo:</strong> ${escapeHtml(contact.phone || 'Đang cập nhật')}</div>
+          <div class="bank-row"><strong>Email:</strong> ${escapeHtml(contact.email || 'Đang cập nhật')}</div>
+        </div>
+        <div class="note">Đây là sách giấy. Khách vui lòng liên hệ để được báo phí ship, xác nhận số lượng và cách gửi sách.</div>
+        <div class="contact-buttons">
+          <a class="btn btn-primary" href="${zaloLink}" target="_blank" rel="noopener">Liên hệ mua sách</a>
+          <a class="btn btn-secondary" href="mailto:${contact.email}?subject=${emailSubject}&body=${emailBody}">Gửi Email đặt sách</a>
         </div>
       `;
       document.getElementById('buyModal').classList.add('show');
@@ -1476,6 +1550,69 @@ Chất lượng</b></div>
       return `images/${raw.replace(/^\.\//, '')}`;
     }
 
+
+
+    async function uploadImageFile(file, folder){
+      if(!file){
+        throw new Error('Bạn chưa chọn ảnh');
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', folder || 'images');
+      const response = await fetch('/api/upload', {
+        method:'POST',
+        body: formData
+      });
+      const json = await response.json();
+      if(!response.ok){
+        throw new Error(json.error || 'Không tải ảnh lên được');
+      }
+      return json.url;
+    }
+
+    async function uploadCoverImage(){
+      const fileInput = document.getElementById('postCoverFile');
+      const file = fileInput.files && fileInput.files[0];
+      if(!file){
+        showToast('Bạn chưa chọn ảnh bìa');
+        return;
+      }
+      try{
+        showToast('Đang tải ảnh bìa lên web...');
+        const url = await uploadImageFile(file, 'covers');
+        document.getElementById('postCoverUrl').value = url;
+        renderCurrentCover(url, document.getElementById('postTitle').value.trim());
+        fileInput.value = '';
+        showToast('Đã tải ảnh bìa lên web thật');
+      }catch(error){
+        console.error(error);
+        showToast(error.message || 'Không tải được ảnh bìa');
+      }
+    }
+
+    async function uploadPreviewImage(index){
+      const fileInput = document.getElementById(`postPreviewFile${index}`);
+      const file = fileInput.files && fileInput.files[0];
+      if(!file){
+        showToast(`Bạn chưa chọn ảnh xem trước ${index}`);
+        return;
+      }
+      try{
+        showToast(`Đang tải ảnh xem trước ${index} lên web...`);
+        const url = await uploadImageFile(file, 'previews');
+        document.getElementById(`postPreviewUrl${index}`).value = url;
+        renderCurrentPreviews([
+          document.getElementById('postPreviewUrl1').value.trim(),
+          document.getElementById('postPreviewUrl2').value.trim(),
+          document.getElementById('postPreviewUrl3').value.trim()
+        ], document.getElementById('postTitle').value.trim());
+        fileInput.value = '';
+        showToast(`Đã tải ảnh xem trước ${index} lên web thật`);
+      }catch(error){
+        console.error(error);
+        showToast(error.message || `Không tải được ảnh xem trước ${index}`);
+      }
+    }
 
     async function saveSlot(){
       const key = currentSlotKey();
