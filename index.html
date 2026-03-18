@@ -1,368 +1,1800 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nhà sách Ngô Bảo – Demo có khung A4 & nút tải</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:'Be Vietnam Pro',Arial,sans-serif;background:#f7f8fc;color:#1f2937}
-:root{
-  --red:#cf1717;
-  --red-dark:#ad1212;
-  --yellow:#ffd84d;
-  --blue:#1f5eff;
-  --green:#16a34a;
-  --line:#e5e7eb;
-  --ink:#1f2937;
-}
-.banner{
-  position:relative; min-height:260px; display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(180deg,var(--red),var(--red-dark)); overflow:hidden;
-}
-.banner::before,.banner::after{
-  content:""; position:absolute; top:0; bottom:0; width:28%; opacity:.14; background-size:cover; background-repeat:no-repeat;
-}
-.banner::before{left:0;background-image:url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80');background-position:left center}
-.banner::after{right:0;background-image:url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=900&q=80');background-position:right center}
-.banner-inner{position:relative;text-align:center;padding:18px 20px}
-.banner h1{margin:0;color:var(--yellow);font-size:clamp(38px,6vw,68px);font-weight:900;letter-spacing:2px}
-.banner p{margin:8px 0 0;color:#fff;font-size:20px;font-weight:700}
-.hero-buttons{margin-top:18px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.hero-buttons button{border:none;padding:12px 18px;border-radius:12px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.12)}
-.btn1{background:var(--yellow);color:#111827}.btn2{background:#fff;color:var(--red)}
-.tabs{
-  max-width:1120px; margin:18px auto 0; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:0 20px;
-}
-.tab{
-  background:linear-gradient(180deg,#ffe88c,#ffd84d); color:var(--blue); padding:13px 20px; border-radius:12px;
-  font-weight:900; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,.08); border:1px solid #f0c92f;
-}
-.tab.active{background:linear-gradient(180deg,#ffd84d,#ffc72c)}
-.container{max-width:1120px;margin:auto;padding:22px 20px 60px}
-.section{display:none}.section.active{display:block}
-.section-title{font-size:28px;font-weight:900;margin:0 0 10px}
-.section-lead{color:#4b5563;margin:0 0 20px;line-height:1.7}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
-.card{
-  background:#fff; border-radius:18px; padding:15px; box-shadow:0 8px 18px rgba(0,0,0,.08);
-  border:1px solid var(--line);
-}
-.a4{
-  aspect-ratio:210 / 297; border-radius:10px; margin-bottom:12px; position:relative; overflow:hidden;
-  background:
-    linear-gradient(135deg,#ffffff 0%,#fff7db 100%);
-  border:1px solid #d7dce5;
-  box-shadow:inset 0 0 0 8px #fff;
-}
-.a4::before{
-  content:""; position:absolute; inset:0;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.0),rgba(255,255,255,.0)),
-    repeating-linear-gradient(180deg, transparent 0 23px, rgba(31,94,255,.06) 23px 24px);
-}
-.a4 .paper-head{
-  position:absolute; left:14px; right:14px; top:14px; height:42px; border-radius:8px;
-  background:linear-gradient(90deg,var(--red),#ef4444);
-}
-.a4 .paper-title{
-  position:absolute; left:18px; right:18px; top:68px; font-size:15px; line-height:1.35; font-weight:900; color:#0f172a;
-}
-.a4 .paper-lines{
-  position:absolute; left:18px; right:18px; top:120px; bottom:18px;
-  background:
-    repeating-linear-gradient(180deg, rgba(31,94,255,.16) 0 2px, transparent 2px 18px);
-  opacity:.55;
-}
-.badge{
-  position:absolute; right:12px; bottom:12px; background:var(--yellow); color:#111827; font-weight:900;
-  font-size:12px; border-radius:999px; padding:6px 10px; box-shadow:0 3px 8px rgba(0,0,0,.12);
-}
-.title{font-size:19px;font-weight:900;margin:0 0 8px;line-height:1.4;min-height:3em}
-.meta{font-size:14px;line-height:1.7;color:#374151}
-.meta div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed #eceff5}
-.price{font-size:22px;font-weight:900;color:var(--red);margin:12px 0}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.actions button{
-  flex:1 1 120px; border:none; padding:10px 12px; border-radius:10px; font-weight:900; cursor:pointer;
-}
-.preview{background:var(--blue);color:#fff}
-.download{background:var(--green);color:#fff}
-.buy{background:var(--yellow);color:#111827}
-.class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.class-card{
-  background:#fff; border-radius:16px; padding:14px; box-shadow:0 6px 14px rgba(0,0,0,.07); border:1px solid var(--line);
-}
-.class-name{
-  display:inline-block; margin-bottom:10px; background:#eef2ff; color:#1e3a8a; font-weight:900; padding:6px 10px; border-radius:999px;
-}
-.contact-box{
-  background:#fff; padding:20px; border-radius:16px; box-shadow:0 6px 16px rgba(0,0,0,.08); line-height:1.9; border:1px solid var(--line)
-}
-.footer{margin-top:32px;background:#111827;color:#ddd;text-align:center;padding:18px}
-.notice{
-  background:linear-gradient(90deg,#fff7cc,#ffe88c); border:1px solid #f5d74f; border-radius:14px; padding:14px 16px;
-  color:#7c2d12; font-weight:700; margin-bottom:20px;
-}
-@media (max-width:560px){
-  .banner{min-height:240px}
-  .title{min-height:auto}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhà sách Ngô Bảo</title>
+  <style>
+    :root{
+      --red1:#8d1120;
+      --red2:#b7192d;
+      --gold:#e7b341;
+      --gold2:#f6d57a;
+      --blue:#1f5fbf;
+      --blue2:#2d74df;
+      --bg:#fff9ef;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --line:#ead7a2;
+      --shadow:0 12px 28px rgba(0,0,0,.08);
+      --shadow-soft:0 18px 40px rgba(0,0,0,.10);
+      --radius:22px;
+      --success:#0f9d58;
+      --danger:#b91c1c;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#fff8ea 0%, #fffdf7 100%);
+      min-height:100vh;
+    }
+    body.admin-open{overflow:hidden}
+    img{max-width:100%}
+    button,input,textarea,select{font:inherit}
+    .container{max-width:1220px;margin:0 auto;padding:0 16px}
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.10), transparent 26%),
+        radial-gradient(circle at top right, rgba(255,255,255,.10), transparent 24%),
+        linear-gradient(135deg,var(--red1),var(--red2));
+      color:#fff;
+      padding:26px 0 22px;
+      box-shadow:var(--shadow);
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:14px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    }
+    .hero-inner{text-align:center;position:relative;z-index:2}
+    .site-title{
+      margin:0;
+      font-family:"Times New Roman", Georgia, serif;
+      font-size:clamp(30px,5vw,58px);
+      font-weight:700;
+      letter-spacing:.7px;
+      line-height:1.05;
+      cursor:pointer;
+      color:#f3c64c;
+      text-shadow:0 3px 16px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.18);
+    }
+    .site-subtitle{
+      margin:10px 0 0;
+      font-size:clamp(12px,2vw,18px);
+      font-weight:700;
+      opacity:.96;
+    }
+    .hero-promo{
+      max-width:760px;
+      margin:12px auto 0;
+      font-size:15px;
+      line-height:1.6;
+      opacity:.96;
+    }
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .pill-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding:10px 16px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:800;
+      border:none;
+      cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+    .pill-btn:hover{transform:translateY(-1px)}
+    .pill-light{background:#fff;color:#8d1120;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+    .pill-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.15)}
+
+    .side-stack{
+      position:absolute;
+      top:50%;
+      width:118px;
+      height:150px;
+      transform:translateY(-50%) perspective(900px) rotateY(-16deg);
+      pointer-events:none;
+      filter:drop-shadow(0 16px 22px rgba(0,0,0,.28));
+    }
+    .side-stack.right{
+      transform:translateY(-50%) perspective(900px) rotateY(16deg);
+    }
+    .side-stack.left{left:20px}
+    .side-stack.right{right:20px}
+    .stack-book{
+      position:absolute;
+      inset:auto 0 0 auto;
+      width:82px;
+      height:116px;
+      border-radius:8px 10px 10px 8px;
+      background:linear-gradient(135deg,#fff7dc 0%,#f4d06f 18%,#b11d30 56%,#7f1021 100%);
+      box-shadow:0 10px 18px rgba(0,0,0,.24);
+      border:1px solid rgba(255,255,255,.28);
+      overflow:hidden;
+    }
+    .stack-book::before{
+      content:"";
+      position:absolute;
+      left:0;top:0;bottom:0;
+      width:13px;
+      background:linear-gradient(180deg,#f7e6b7,#cf9e2f 55%,#8b111f);
+      box-shadow:inset -2px 0 0 rgba(255,255,255,.35);
+    }
+    .stack-book::after{
+      content:"";
+      position:absolute;
+      right:0;top:10px;bottom:10px;
+      width:10px;
+      background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,248,224,.35));
+      opacity:.72;
+    }
+    .stack-book b{
+      position:absolute;
+      left:20px;right:12px;top:16px;
+      font-size:10px;
+      line-height:1.25;
+      color:#fff8dc;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+    }
+    .stack-book.s1{right:20px;bottom:10px;transform:rotate(-5deg)}
+    .stack-book.s2{right:32px;bottom:20px;transform:rotate(3deg);background:linear-gradient(135deg,#fff8e4 0%,#f0c96c 18%,#1a5fbb 58%,#10356e 100%)}
+    .stack-book.s3{right:42px;bottom:30px;transform:rotate(-2deg);background:linear-gradient(135deg,#fff6da 0%,#eec35c 20%,#198754 58%,#0f5132 100%)}
+    .stack-book.s4{right:54px;bottom:42px;transform:rotate(6deg);background:linear-gradient(135deg,#fff4d2 0%,#e8bb54 20%,#8d1120 58%,#540912 100%)}
+
+    .hero-mini-stats{display:none}
+
+    .toolbar{padding:18px 0 10px}
+    .toolbar-row{
+      display:grid;
+      grid-template-columns:1.5fr .7fr .7fr;
+      gap:12px;
+      align-items:center;
+    }
+    .search, .filter-select{
+      width:100%;
+      padding:16px 18px;
+      border:2px solid #edd7a1;
+      border-radius:18px;
+      background:#fff;
+      font-size:16px;
+      outline:none;
+      box-shadow:0 4px 14px rgba(0,0,0,.03);
+    }
+    .search:focus,.filter-select:focus{
+      border-color:#2d74df;
+      box-shadow:0 0 0 4px rgba(45,116,223,.10);
+    }
+
+    .summary-bar{display:none}
+
+    .tab-box{
+      margin:14px 0 18px;
+      background:linear-gradient(180deg,var(--blue2),var(--blue));
+      border-radius:24px;
+      padding:14px;
+      box-shadow:0 10px 24px rgba(31,95,191,.22);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .tabs{
+      display:flex;
+      min-height:52px;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .tab-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      border:none;
+      background:#ffffff;
+      color:var(--blue);
+      border-radius:999px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 4px 14px rgba(0,0,0,.08);
+      transition:transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .tab-btn:hover{transform:translateY(-1px)}
+    .tab-btn.active{
+      background:linear-gradient(180deg,var(--gold2),var(--gold));
+      color:#fff;
+    }
+
+    .section-head{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+    .section-title{
+      margin:8px 0 8px;
+      font-size:30px;
+      color:#13213d;
+      font-weight:800;
+    }
+    .section-sub{
+      color:#667085;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+      padding-bottom:30px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid #f0dfb6;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{
+      transform:translateY(-3px);
+      box-shadow:var(--shadow-soft);
+    }
+    .cover{
+      aspect-ratio:210/297;
+      background:linear-gradient(180deg,#fff6d5,#f8e09a);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border-bottom:1px solid #f4e7c5;
+      position:relative;
+    }
+    .cover::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:32px;
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.04));
+      pointer-events:none;
+    }
+    .cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .cover .ph{
+      padding:18px;
+      text-align:center;
+      color:#8a5b00;
+      font-weight:800;
+      line-height:1.5;
+    }
+    .card-body{
+      padding:15px 15px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+    .top-badges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .badge{
+      align-self:flex-start;
+      background:#fff3ca;
+      color:#946300;
+      font-size:12px;
+      font-weight:800;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid #edd48f;
+    }
+    .slot-badge{
+      background:#eef2ff;
+      color:#24428a;
+      border:1px solid #cfd8ff;
+    }
+    .title{
+      margin:0;
+      font-size:24px;
+      line-height:1.25;
+      color:#16223d;
+      font-weight:800;
+      min-height:60px;
+    }
+    .meta{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      min-height:20px;
+    }
+    .desc{
+      color:#374151;
+      font-size:14px;
+      line-height:1.58;
+      min-height:68px;
+      white-space:pre-line;
+    }
+    .price{
+      color:var(--red2);
+      font-size:24px;
+      font-weight:900;
+      margin-top:auto;
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+    }
+    .preview-strip{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-top:4px;
+    }
+    .preview-thumb{
+      aspect-ratio:4/3;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #edd7a1;
+      background:#fff8e9;
+      cursor:pointer;
+      box-shadow:0 5px 14px rgba(0,0,0,.06);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .preview-thumb:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 18px rgba(0,0,0,.12);
+    }
+    .preview-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .preview-note{
+      font-size:12px;
+      font-weight:800;
+      color:#946300;
+      margin-top:2px;
+    }
+    .current-preview-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    .current-preview{
+      aspect-ratio:4/3;
+      border:1px dashed #dbbe79;
+      border-radius:16px;
+      background:#fffaf0;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .current-preview img{width:100%;height:100%;object-fit:cover;display:block}
+    .current-preview span{padding:8px;text-align:center;color:#8a5b00;font-size:12px;font-weight:800;line-height:1.4}
+    .preview-modal-image{
+      width:100%;
+      max-height:min(78vh,900px);
+      object-fit:contain;
+      border-radius:18px;
+      background:#fff;
+      display:block;
+    }
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      text-decoration:none;
+      text-align:center;
+      transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--red2);color:#fff;box-shadow:0 8px 18px rgba(183,25,45,.18)}
+    .btn-secondary{background:#eef2ff;color:#173c8b}
+    .btn-light{background:#f3f4f6;color:#111827}
+    .btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff}
+    .btn-danger{background:#fee2e2;color:#991b1b}
+
+    .empty{
+      background:#fff;
+      border:1px dashed #d9c38c;
+      color:#8b7355;
+      padding:26px;
+      border-radius:22px;
+      text-align:center;
+      box-shadow:var(--shadow);
+      grid-column:1/-1;
+    }
+
+    .buy-modal,.admin-modal,.about-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(17,24,39,.56);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:1000;
+    }
+    .buy-modal.show,.admin-modal.show,.about-modal.show{display:flex}
+    .modal-card{
+      width:min(720px,100%);
+      background:#fff;
+      border-radius:24px;
+      box-shadow:0 24px 60px rgba(0,0,0,.20);
+      padding:22px;
+      max-height:92vh;
+      overflow:auto;
+    }
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .modal-title{
+      margin:0;
+      font-size:32px;
+      color:#16223d;
+      font-weight:900;
+    }
+    .close{
+      border:none;
+      background:#f3f4f6;
+      color:#111827;
+      padding:11px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .bank-box{
+      background:#fff9e8;
+      border:1px solid #edd48f;
+      border-radius:18px;
+      padding:16px;
+      margin-top:8px;
+    }
+    .bank-row{margin:8px 0;font-size:16px;line-height:1.55}
+    .note{margin-top:12px;color:#6b7280;line-height:1.6}
+    .contact-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+    .admin-panel{
+      width:min(1240px,100%);
+      background:#fff;
+      border-radius:26px;
+      box-shadow:0 24px 60px rgba(0,0,0,.22);
+      padding:18px 18px 24px;
+      max-height:94vh;
+      overflow:auto;
+    }
+    .admin-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .admin-header h2{
+      margin:0;
+      color:var(--blue);
+      font-size:38px;
+      font-weight:900;
+    }
+    .admin-header .sub{margin-top:6px;color:#4b5563;line-height:1.55}
+    .admin-grid{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:18px;
+    }
+    .admin-card{
+      background:#fffdf8;
+      border:1px solid #eddcb2;
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 8px 18px rgba(0,0,0,.04);
+    }
+    .admin-card h3{
+      margin:0 0 14px;
+      font-size:22px;
+      color:#16223d;
+      font-weight:900;
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px 14px;
+    }
+    .full{grid-column:1/-1}
+    label{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-weight:800;
+      color:#374151;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid #d9dde6;
+      background:#fff;
+      font-size:15px;
+      outline:none;
+    }
+    textarea{min-height:92px;resize:vertical}
+    input:focus,select:focus,textarea:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,.08);
+    }
+    .admin-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .hint{margin-top:8px;color:#6b7280;font-size:13px;line-height:1.55}
+    .mini-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:510px;
+      overflow:auto;
+      padding-right:4px;
+    }
+    .mini-item{
+      background:#fff;
+      border:1px solid #ece3c9;
+      border-radius:16px;
+      padding:12px;
+    }
+    .mini-title{font-size:18px;font-weight:900;color:#16223d;line-height:1.3}
+    .mini-meta{margin-top:4px;font-size:14px;color:#6b7280}
+    .mini-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .small-note{
+      margin-top:10px;
+      padding:11px 12px;
+      border-radius:14px;
+      background:#eff6ff;
+      color:#23406f;
+      font-size:13px;
+      line-height:1.55;
+      font-weight:700;
+    }
+    .backup-box{
+      background:#fff;
+      border:1px dashed #d8c89f;
+      border-radius:16px;
+      padding:12px;
+      margin-top:14px;
+    }
+    .current-cover{
+      margin-top:8px;
+      width:96px;
+      aspect-ratio:210/297;
+      border-radius:10px;
+      border:1px solid #eadcb7;
+      overflow:hidden;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .current-cover img{width:100%;height:100%;object-fit:cover}
+    .current-cover span{padding:8px;text-align:center;color:#8a5b00;font-size:12px;font-weight:800}
+
+    .hidden-trigger{
+      position:fixed;
+      right:12px;
+      bottom:12px;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:var(--blue);
+      opacity:.26;
+      cursor:pointer;
+      z-index:40;
+    }
+    .hidden-trigger:hover{opacity:.85}
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:20px;
+      transform:translateX(-50%) translateY(20px);
+      opacity:0;
+      pointer-events:none;
+      background:#111827;
+      color:#fff;
+      padding:12px 16px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:800;
+      transition:.2s;
+      z-index:1400;
+      max-width:min(92vw,560px);
+      text-align:center;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    .zalo-float{
+      position:fixed;
+      right:20px;
+      bottom:80px;
+      background:#1da1f2;
+      color:#fff;
+      padding:12px 16px;
+      border-radius:30px;
+      font-weight:800;
+      text-decoration:none;
+      box-shadow:0 10px 24px rgba(0,0,0,.25);
+      z-index:900;
+    }
+
+    .footer{
+      margin-top:12px;
+      text-align:center;
+      color:#6b7280;
+      padding:20px 0 28px;
+      font-size:14px;
+      border-top:2px solid #ecd9a5;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:16px;
+      text-align:left;
+      font-size:14px;
+    }
+    .footer-title{font-weight:900;margin-bottom:6px;color:#16223d}
+
+    .about-card{
+      background:#fff;
+      max-width:740px;
+      width:min(740px,100%);
+      padding:30px;
+      border-radius:20px;
+      line-height:1.7;
+      box-shadow:0 24px 60px rgba(0,0,0,.22);
+      max-height:92vh;
+      overflow:auto;
+    }
+    .about-card h2{margin-top:0;color:#16223d;font-size:32px}
+
+    @media (max-width: 980px){
+      .admin-grid,.toolbar-row,.footer-grid,.hero-mini-stats{grid-template-columns:1fr}
+      .site-title{font-size:40px}
+      .modal-title,.admin-header h2{font-size:28px}
+      .side-book{display:none}
+    }
+    @media (max-width: 920px){
+      .admin-grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 560px){
+      .container{padding:0 12px}
+      .hero{padding:20px 0 18px}
+      .tab-box{padding:10px}
+      .tab-btn{padding:11px 14px;font-size:14px}
+      .title{font-size:22px}
+      .btn{width:100%}
+      .actions{flex-direction:column}
+      .modal-card,.admin-panel,.about-card{padding:16px}
+      .section-title{font-size:28px}
+      .zalo-float{right:12px;bottom:76px}
+    }
+  </style>
 </head>
 <body>
+  <header class="hero">
+    <div class="container hero-inner">
+      <div class="side-stack left" aria-hidden="true">
+        <div class="stack-book s1"><b>Sách
+Kỹ thuật</b></div>
+        <div class="stack-book s2"><b>Đề thi
+Bài giảng</b></div>
+        <div class="stack-book s3"><b>Nhà sách
+Ngô Bảo</b></div>
+        <div class="stack-book s4"><b>PDF
+Chất lượng</b></div>
+      </div>
+      <div class="side-stack right" aria-hidden="true">
+        <div class="stack-book s1"><b>Sách
+Kỹ thuật</b></div>
+        <div class="stack-book s2"><b>Đề thi
+Bài giảng</b></div>
+        <div class="stack-book s3"><b>Nhà sách
+Ngô Bảo</b></div>
+        <div class="stack-book s4"><b>PDF
+Chất lượng</b></div>
+      </div>
 
-<div class="banner">
-  <div class="banner-inner">
-    <h1>NHÀ SÁCH NGÔ BẢO</h1>
-    <p>Tài liệu kỹ thuật – Đề thi – Tài liệu học tập chất lượng</p>
-    <div class="hero-buttons">
-      <button class="btn1" onclick="showTab('books')">Xem sách kỹ thuật</button>
-      <button class="btn2" onclick="showTab('free')">Tài liệu miễn phí</button>
+      <h1 id="siteTitle" class="site-title">NHÀ SÁCH NGÔ BẢO</h1>
+      <div class="site-subtitle">Nơi uy tín, chất lượng, người bạn đồng hành của sinh viên</div>
+      <div class="hero-promo">Chuyên cung cấp sách kỹ thuật, sách phổ thông, đề thi, bài giảng và video học tập rõ ràng, thực tế, dễ tra cứu và thuận tiện cho sinh viên.</div>
+
+      <div class="hero-actions">
+        <button class="pill-btn pill-light" type="button" onclick="openAbout()">Giới thiệu</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <div class="toolbar-row">
+        <input id="searchInput" class="search" type="text" placeholder="Tìm nhanh sách, đề thi, bài giảng, video...">
+        <select id="authorFilter" class="filter-select">
+          <option value="">Lọc theo tác giả / nguồn</option>
+        </select>
+        <select id="sortSelect" class="filter-select">
+          <option value="slot">Sắp xếp theo ô đăng</option>
+          <option value="title-asc">Sắp xếp theo tên A → Z</option>
+          <option value="title-desc">Sắp xếp theo tên Z → A</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div class="tab-box">
+      <nav class="tabs" id="tabs">
+        <button class="tab-btn active" type="button" onclick="setTab('Sách kỹ thuật')">Sách kỹ thuật</button>
+        <button class="tab-btn" type="button" onclick="setTab('Sách phổ thông')">Sách phổ thông</button>
+        <button class="tab-btn" type="button" onclick="setTab('Đề thi')">Đề thi</button>
+        <button class="tab-btn" type="button" onclick="setTab('Bài giảng')">Bài giảng</button>
+        <button class="tab-btn" type="button" onclick="setTab('Video')">Video</button>
+      </nav>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2 class="section-title" id="sectionTitle"></h2>
+        <div class="section-sub" id="sectionSub">Chọn tài liệu phù hợp để xem và đặt mua.</div>
+      </div>
+    </div>
+
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <div id="buyModal" class="buy-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 class="modal-title">Mua tài liệu</h3>
+        <button type="button" class="close" onclick="closeBuyModal()">Đóng</button>
+      </div>
+      <div id="buyContent"></div>
     </div>
   </div>
-</div>
 
-<div class="tabs">
-  <div class="tab active" data-tab="home" onclick="showTab('home')">Trang chủ</div>
-  <div class="tab" data-tab="books" onclick="showTab('books')">Sách kỹ thuật</div>
-  <div class="tab" data-tab="exam" onclick="showTab('exam')">Kho đề</div>
-  <div class="tab" data-tab="class" onclick="showTab('class')">Lớp 1–12</div>
-  <div class="tab" data-tab="free" onclick="showTab('free')">Tài liệu miễn phí</div>
-  <div class="tab" data-tab="contact" onclick="showTab('contact')">Liên hệ</div>
-</div>
-
-<div class="container">
-  <section id="home" class="section active">
-    <div class="notice">
-      Bản này tôi đã chèn <b>khung ảnh giấy A4 đứng</b> vào tất cả khu: sách, kho đề, lớp 1–12 và tài liệu miễn phí,
-      đồng thời thêm <b>nút Tải về</b> để bạn hình dung đúng website thật.
+  <div id="adminLoginModal" class="admin-modal">
+    <div class="modal-card" style="max-width:460px;">
+      <div class="modal-head">
+        <h3 class="modal-title">Quản trị bí mật</h3>
+        <button type="button" class="close" onclick="closeAdminLogin()">Đóng</button>
+      </div>
+      <label>
+        Mật khẩu quản trị
+        <input id="adminPasswordInput" type="password" placeholder="Nhập mật khẩu">
+      </label>
+      <div class="admin-actions">
+        <button type="button" class="btn btn-primary" onclick="submitAdminLogin()">Vào quản trị</button>
+      </div>
+      <div class="hint">Mẹo: bạn vẫn có thể mở khu quản trị như cũ bằng cách bấm 5 lần vào tiêu đề “NHÀ SÁCH NGÔ BẢO”.</div>
     </div>
-    <h2 class="section-title">Chào mừng đến với Nhà sách Ngô Bảo</h2>
-    <p class="section-lead">
-      Nơi cung cấp tài liệu kỹ thuật, bộ đề thi và tài liệu học tập được trình bày rõ ràng, dễ học, dễ tải về và thuận tiện trên cả điện thoại lẫn máy tính.
-    </p>
-  </section>
+  </div>
 
-  <section id="books" class="section">
-    <h2 class="section-title">Sách kỹ thuật</h2>
-    <p class="section-lead">Khung ảnh dưới đây đang là tỷ lệ giấy A4 đứng. Sách PDF, bìa tài liệu hay trang xem thử đều có thể đặt vừa trong khung này.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head"></div>
-          <div class="paper-title">SỨC BỀN VẬT LIỆU<br>TẬP 1</div>
-          <div class="paper-lines"></div>
-          <div class="badge">A4 Preview</div>
+  <div id="adminPanelModal" class="admin-modal">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <div>
+          <h2>Quản trị</h2>
+          <div class="sub">Giữ nguyên toàn bộ cơ chế cũ, đồng thời nâng cấp thêm sao lưu dữ liệu, đổi mật khẩu, xem ảnh bìa hiện tại và lọc nhanh bài đã đăng. Mỗi danh mục vẫn có 15 ô riêng, không bị đè nhau.</div>
         </div>
-        <div class="title">Sức bền vật liệu tập 1</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>320</span></div>
-          <div><span>Dung lượng</span><span>45MB</span></div>
-          <div><span>Giá</span><span>199.000đ</span></div>
-        </div>
-        <div class="price">199.000đ</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Mua PDF</button>
-        </div>
+        <button type="button" class="close" onclick="closeAdminPanel()">Thoát quản trị</button>
       </div>
 
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#1f5eff,#60a5fa)"></div>
-          <div class="paper-title">CƠ HỌC<br>KỸ THUẬT</div>
-          <div class="paper-lines"></div>
-          <div class="badge">A4 Preview</div>
-        </div>
-        <div class="title">Cơ học kỹ thuật</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>280</span></div>
-          <div><span>Dung lượng</span><span>40MB</span></div>
-          <div><span>Giá</span><span>169.000đ</span></div>
-        </div>
-        <div class="price">169.000đ</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Mua PDF</button>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>Quản lý bài đăng</h3>
+          <div class="form-grid">
+            <label>
+              Danh mục
+              <select id="slotCategory"></select>
+            </label>
+            <label>
+              Ô số
+              <select id="slotNumber"></select>
+            </label>
+            <label class="full">
+              Tên bài / tên sách
+              <input id="postTitle" type="text" placeholder="Bạn tự nhập tên bài tại đây">
+            </label>
+            <label>
+              Tác giả / nguồn
+              <input id="postAuthor" type="text" placeholder="Ngô Bảo">
+            </label>
+            <label>
+              Giá
+              <input id="postPrice" type="text" placeholder="199.000đ hoặc Miễn phí">
+            </label>
+            <label>
+              Số trang
+              <input id="postPages" type="text" placeholder="320">
+            </label>
+            <label>
+              Dung lượng
+              <input id="postSize" type="text" placeholder="45MB">
+            </label>
+            <label class="full">
+              Mô tả ngắn
+              <textarea id="postDesc" placeholder="Viết mô tả ngắn gọn, rõ ràng, hấp dẫn"></textarea>
+            </label>
+            <label class="full">
+              Tên file ảnh bìa trong thư mục images
+              <input id="postCoverUrl" type="text" placeholder="vd: bia-sach.jpg hoặc images/bia-sach.jpg">
+              <div id="currentCover" class="current-cover"><span>Chưa có ảnh bìa</span></div>
+            </label>
+            <label>
+              Tên file ảnh xem trước 1 trong thư mục images
+              <input id="postPreviewUrl1" type="text" placeholder="vd: xemtruoc-1.jpg hoặc images/xemtruoc-1.jpg">
+            </label>
+            <label>
+              Tên file ảnh xem trước 2 trong thư mục images
+              <input id="postPreviewUrl2" type="text" placeholder="vd: xemtruoc-2.jpg hoặc images/xemtruoc-2.jpg">
+            </label>
+            <label>
+              Tên file ảnh xem trước 3 trong thư mục images
+              <input id="postPreviewUrl3" type="text" placeholder="vd: xemtruoc-3.jpg hoặc images/xemtruoc-3.jpg">
+            </label>
+            <div id="currentPreviewGrid" class="current-preview-grid full"></div>
+            <label class="full">
+              Link xem thử
+              <input id="postPreviewLink" type="text" placeholder="https://...">
+            </label>
+            <label class="full">
+              Link file để gửi cho khách
+              <input id="postFileLink" type="text" placeholder="https://...">
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button type="button" class="btn btn-primary" onclick="saveSlot()">Lưu ô này</button>
+            <button type="button" class="btn btn-light" onclick="clearCurrentSlot()">Xóa nội dung ô này</button>
+            <button type="button" class="btn btn-secondary" onclick="duplicateCurrentToEmptySlot()">Nhân bản sang ô trống</button>
+          </div>
+          <div class="hint">Ô chưa có nội dung sẽ không hiện ngoài trang khách. Ảnh bìa và 3 ảnh xem trước nay lấy từ thư mục images đặt cùng web. Bạn chỉ cần gõ tên file ảnh hoặc đường dẫn images/tên-file.jpg.</div>
 
-  <section id="exam" class="section">
-    <h2 class="section-title">Kho đề</h2>
-    <p class="section-lead">Kho đề cũng có khung ảnh A4 riêng. Ảnh bìa đề, ảnh trang đầu đề thi hay ảnh mô tả đều đặt được rất vừa.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#16a34a,#4ade80)"></div>
-          <div class="paper-title">ĐỀ THI TOÁN 12<br>ÔN TẬP HỌC KỲ</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Đề thi</div>
+          <div class="backup-box">
+            <strong>Sao lưu & phục hồi dữ liệu</strong>
+            <div class="admin-actions">
+              <button type="button" class="btn btn-gold" onclick="exportDataBackup()">Xuất file sao lưu</button>
+              <label class="btn btn-light" style="display:inline-flex;align-items:center;justify-content:center;cursor:pointer;min-width:170px;">
+                Nhập lại sao lưu
+                <input id="importBackupInput" type="file" accept="application/json" style="display:none;" onchange="importDataBackup(event)">
+              </label>
+            </div>
+            <div class="hint">Tính năng này giúp bạn lưu toàn bộ sách, thông tin liên hệ và mật khẩu quản trị ra 1 file JSON để cất giữ an toàn.</div>
+          </div>
         </div>
-        <div class="title">Đề thi Toán 12 – Ôn tập học kỳ</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>18</span></div>
-          <div><span>Dung lượng</span><span>3MB</span></div>
-          <div><span>Giá</span><span>29.000đ</span></div>
-        </div>
-        <div class="price">29.000đ</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Mua đề</button>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#f59e0b,#facc15)"></div>
-          <div class="paper-title">ĐỀ THI VẬT LÝ 10</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Đề thi</div>
-        </div>
-        <div class="title">Đề thi Vật lý 10</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>12</span></div>
-          <div><span>Dung lượng</span><span>2MB</span></div>
-          <div><span>Giá</span><span>Miễn phí</span></div>
-        </div>
-        <div class="price">Miễn phí</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Tải ngay</button>
-        </div>
-      </div>
-    </div>
-  </section>
+        <div class="admin-card">
+          <h3>Thông tin liên hệ</h3>
+          <div class="form-grid">
+            <label class="full">
+              Số điện thoại / Zalo
+              <input id="contactPhone" type="text">
+            </label>
+            <label class="full">
+              Email
+              <input id="contactEmail" type="text">
+            </label>
+            <label>
+              Ngân hàng
+              <input id="contactBankName" type="text">
+            </label>
+            <label>
+              Số tài khoản
+              <input id="contactBankNumber" type="text">
+            </label>
+            <label class="full">
+              Chủ tài khoản
+              <input id="contactBankOwner" type="text">
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button type="button" class="btn btn-primary" onclick="saveContact()">Lưu thông tin liên hệ</button>
+          </div>
 
-  <section id="class" class="section">
-    <h2 class="section-title">Lớp 1–12</h2>
-    <p class="section-lead">Ngay cả mục Lớp 1–12 cũng có thể có khung ảnh riêng. Mỗi lớp có thể hiện ảnh bìa tài liệu hoặc trang đầu A4 như dưới đây.</p>
-    <div class="class-grid">
-      <div class="class-card">
-        <div class="class-name">Lớp 1</div>
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#ef4444,#fb7185)"></div>
-          <div class="paper-title">TÀI LIỆU TOÁN<br>LỚP 1</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Lớp 1</div>
-        </div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-        </div>
-      </div>
+          <h3 style="margin-top:22px;">Mật khẩu quản trị</h3>
+          <div class="form-grid">
+            <label class="full">
+              Mật khẩu mới
+              <input id="newAdminPassword" type="text" placeholder="Nhập mật khẩu mới">
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button type="button" class="btn btn-secondary" onclick="saveAdminPassword()">Đổi mật khẩu</button>
+          </div>
+          <div class="small-note">Mật khẩu mặc định vẫn là <strong>quantri123</strong> nếu bạn chưa đổi.</div>
 
-      <div class="class-card">
-        <div class="class-name">Lớp 6</div>
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#1f5eff,#60a5fa)"></div>
-          <div class="paper-title">BỘ ĐỀ TOÁN<br>LỚP 6</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Lớp 6</div>
-        </div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-        </div>
-      </div>
-
-      <div class="class-card">
-        <div class="class-name">Lớp 12</div>
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#16a34a,#4ade80)"></div>
-          <div class="paper-title">ÔN THI TỐT NGHIỆP<br>LỚP 12</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Lớp 12</div>
-        </div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
+          <h3 style="margin-top:22px;">Các ô đã có nội dung</h3>
+          <div id="adminList" class="mini-list"></div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section id="free" class="section">
-    <h2 class="section-title">Tài liệu miễn phí</h2>
-    <p class="section-lead">Tài liệu miễn phí cũng có khung ảnh A4 riêng và có thể gắn nút tải về như tài liệu thật.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#9333ea,#c084fc)"></div>
-          <div class="paper-title">PHIẾU BÀI TẬP<br>VẬT LÝ 10</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Free</div>
-        </div>
-        <div class="title">Phiếu bài tập Vật lý 10</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>10</span></div>
-          <div><span>Dung lượng</span><span>2MB</span></div>
-          <div><span>Giá</span><span>Miễn phí</span></div>
-        </div>
-        <div class="price">Miễn phí</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Tải ngay</button>
-        </div>
+  <div id="aboutModal" class="about-modal">
+    <div class="about-card">
+      <div class="modal-head">
+        <h2>Giới thiệu</h2>
+        <button type="button" class="close" onclick="closeAbout()">Đóng</button>
       </div>
+      <p><strong>Nhà sách Ngô Bảo</strong> chuyên cung cấp tài liệu học tập, sách kỹ thuật, đề thi, bài giảng và video phục vụ sinh viên.</p>
+      <p>Mục tiêu của nhà sách là giúp người học tiếp cận nguồn tài liệu chất lượng, rõ ràng, dễ sử dụng và đáng tin cậy; từ đó học chắc kiến thức và tiết kiệm thời gian tìm kiếm.</p>
+      <p>Website được thiết kế theo hướng gọn, dễ xem trên điện thoại và máy tính, đồng thời có khu quản trị bí mật để chủ website tự đăng tài liệu, cập nhật ảnh bìa, giá bán và thông tin liên hệ.</p>
+    </div>
+  </div>
 
-      <div class="card">
-        <div class="a4">
-          <div class="paper-head" style="background:linear-gradient(90deg,#f59e0b,#facc15)"></div>
-          <div class="paper-title">10 ĐỀ ÔN TẬP<br>TOÁN 12</div>
-          <div class="paper-lines"></div>
-          <div class="badge">Free</div>
-        </div>
-        <div class="title">10 đề ôn tập Toán 12</div>
-        <div class="meta">
-          <div><span>Tác giả</span><span>Nhà sách Ngô Bảo</span></div>
-          <div><span>Số trang</span><span>26</span></div>
-          <div><span>Dung lượng</span><span>4MB</span></div>
-          <div><span>Giá</span><span>Miễn phí</span></div>
-        </div>
-        <div class="price">Miễn phí</div>
-        <div class="actions">
-          <button class="preview">Xem thử</button>
-          <button class="download">Tải về</button>
-          <button class="buy">Tải ngay</button>
-        </div>
+  <div id="previewModal" class="about-modal">
+    <div class="about-card" style="max-width:980px;">
+      <div class="modal-head">
+        <h2 id="previewModalTitle">Xem trước</h2>
+        <button type="button" class="close" onclick="closePreviewModal()">Đóng</button>
+      </div>
+      <img id="previewModalImage" class="preview-modal-image" alt="Ảnh xem trước">
+    </div>
+  </div>
+
+  <div id="hiddenTrigger" class="hidden-trigger" title="Quản trị bí mật"></div>
+  <div id="toast" class="toast"></div>
+
+
+  <footer class="footer container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-title">NHÀ SÁCH NGÔ BẢO</div>
+        Sách kỹ thuật – Sách phổ thông – Đề thi – Bài giảng – Video
+      </div>
+      <div>
+        <div class="footer-title">Liên hệ</div>
+        Zalo: <span id="fphone"></span><br>
+        Email: <span id="fmail"></span>
+      </div>
+      <div>
+        <div class="footer-title">Thanh toán</div>
+        Ngân hàng: <span id="fbank"></span><br>
+        STK: <span id="fstk"></span><br>
+        Chủ TK: <span id="fowner"></span>
       </div>
     </div>
-  </section>
+    <div style="margin-top:16px;text-align:center;">© Nhà sách Ngô Bảo</div>
+  </footer>
 
-  <section id="contact" class="section">
-    <h2 class="section-title">Liên hệ</h2>
-    <div class="contact-box">
-      <b>SĐT / Zalo:</b> 0903852554<br>
-      <b>Email:</b> ngobaobk@gmail.com<br>
-      <b>BIDV:</b> 8894831012
-    </div>
-  </section>
-</div>
+  <script>
+    const STORAGE_KEY = 'nhasach_ngobao_slots_v3';
+    const CONTACT_KEY = 'nhasach_ngobao_contact_v3';
+    const PASS_KEY = 'nhasach_ngobao_admin_pass_v3';
+    const ADMIN_PASSWORD_DEFAULT = 'quantri123';
+    const SLOTS_PER_CATEGORY = 15;
 
-<div class="footer">Nhà sách Ngô Bảo – Tài liệu kỹ thuật & đề thi</div>
+    const REMOTE_SYNC = {
+      enabled: false,
+      endpoint: '',
+      apiKey: '',
+      note: 'Bật khi bạn có backend thật như Supabase, Firebase, JSONBin hoặc Cloudflare Worker.'
+    };
 
-<script>
-function showTab(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelector('[data-tab="'+id+'"]').classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-</script>
+    const categories = ['Sách kỹ thuật','Sách phổ thông','Đề thi','Bài giảng','Video'];
+
+    const defaultContact = {
+      phone: '0903852554',
+      email: 'ngobaobk@gmail.com',
+      bankName: 'BIDV',
+      bankNumber: '8894831012',
+      bankOwner: 'Ngô Bảo'
+    };
+
+    let currentTab = 'Sách kỹ thuật';
+    let titleClicks = 0;
+    let clickTimer = null;
+
+    function slotId(category, number){
+      return category + '||' + number;
+    }
+
+    function createDefaultSlots(){
+      const data = {};
+      categories.forEach(cat => {
+        for(let i=1;i<=SLOTS_PER_CATEGORY;i++){
+          data[slotId(cat,i)] = {
+            category: cat,
+            slot: i,
+            title: '',
+            author: '',
+            price: '',
+            pages: '',
+            size: '',
+            desc: '',
+            cover: '',
+            previewImages: ['', '', ''],
+            previewLink: '',
+            fileLink: ''
+          };
+        }
+      });
+      return data;
+    }
+
+    function loadSlots(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        const data = createDefaultSlots();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        return data;
+      }
+      try{
+        const parsed = JSON.parse(raw) || {};
+        const defaults = createDefaultSlots();
+        Object.keys(defaults).forEach(key => {
+          if(!parsed[key]) parsed[key] = defaults[key];
+          parsed[key] = {...defaults[key], ...parsed[key], previewImages: normalizePreviewImages(parsed[key].previewImages)};
+        });
+        return parsed;
+      }catch(error){
+        console.error(error);
+        const data = createDefaultSlots();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        return data;
+      }
+    }
+
+    function saveSlots(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(slots));
+      pushRemoteData();
+    }
+
+    function loadContact(){
+      const raw = localStorage.getItem(CONTACT_KEY);
+      if(!raw){
+        localStorage.setItem(CONTACT_KEY, JSON.stringify(defaultContact));
+        return {...defaultContact};
+      }
+      try{
+        return {...defaultContact, ...JSON.parse(raw)};
+      }catch(error){
+        console.error(error);
+        return {...defaultContact};
+      }
+    }
+
+    function saveContactStorage(){
+      localStorage.setItem(CONTACT_KEY, JSON.stringify(contact));
+      pushRemoteData();
+    }
+
+    function getAdminPassword(){
+      return localStorage.getItem(PASS_KEY) || ADMIN_PASSWORD_DEFAULT;
+    }
+
+    function setAdminPassword(value){
+      localStorage.setItem(PASS_KEY, value);
+      pushRemoteData();
+    }
+
+    async function pullRemoteData(){
+      if(!REMOTE_SYNC.enabled || !REMOTE_SYNC.endpoint) return false;
+      try{
+        const response = await fetch(REMOTE_SYNC.endpoint, {
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            ...(REMOTE_SYNC.apiKey ? {'Authorization':'Bearer ' + REMOTE_SYNC.apiKey} : {})
+          }
+        });
+        if(!response.ok) throw new Error('Không đọc được dữ liệu từ kho lưu trữ');
+        const remote = await response.json();
+        if(remote && typeof remote === 'object'){
+          if(remote.slots && typeof remote.slots === 'object'){
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({...createDefaultSlots(), ...remote.slots}));
+          }
+          if(remote.contact && typeof remote.contact === 'object'){
+            localStorage.setItem(CONTACT_KEY, JSON.stringify({...defaultContact, ...remote.contact}));
+          }
+          if(remote.password && typeof remote.password === 'string'){
+            localStorage.setItem(PASS_KEY, remote.password);
+          }
+          return true;
+        }
+      }catch(error){
+        console.warn(error);
+      }
+      return false;
+    }
+
+    async function pushRemoteData(){
+      if(!REMOTE_SYNC.enabled || !REMOTE_SYNC.endpoint) return false;
+      try{
+        const payload = {
+          slots,
+          contact,
+          password: getAdminPassword(),
+          updatedAt: new Date().toISOString()
+        };
+        const response = await fetch(REMOTE_SYNC.endpoint, {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            ...(REMOTE_SYNC.apiKey ? {'Authorization':'Bearer ' + REMOTE_SYNC.apiKey} : {})
+          },
+          body: JSON.stringify(payload)
+        });
+        if(!response.ok) throw new Error('Không ghi được dữ liệu lên kho lưu trữ');
+        return true;
+      }catch(error){
+        console.warn(error);
+        return false;
+      }
+    }
+
+    let slots = loadSlots();
+    let contact = loadContact();
+
+    function showToast(text){
+      const t = document.getElementById('toast');
+      t.textContent = text;
+      t.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(()=>t.classList.remove('show'),2400);
+    }
+
+    function normalizePreviewImages(list){
+      if(Array.isArray(list)){
+        return [list[0] || '', list[1] || '', list[2] || ''];
+      }
+      return ['', '', ''];
+    }
+
+    function openPreviewModal(src, title, index){
+      if(!src) return;
+      document.getElementById('previewModalTitle').textContent = `${title} - Hình xem trước ${index}`;
+      document.getElementById('previewModalImage').src = src;
+      document.getElementById('previewModalImage').alt = `${title} - Hình xem trước ${index}`;
+      document.getElementById('previewModal').classList.add('show');
+    }
+
+    function closePreviewModal(){
+      document.getElementById('previewModal').classList.remove('show');
+    }
+
+    function filledPostsByCategory(category){
+      return Object.values(slots)
+        .filter(item => item.category === category && item.title.trim());
+    }
+
+    function allFilledPosts(){
+      return Object.values(slots).filter(item => item.title.trim());
+    }
+
+    function updateStats(){
+      const filled = allFilledPosts();
+      const statPosts = document.getElementById('statPosts');
+      const statCategories = document.getElementById('statCategories');
+      if(statPosts) statPosts.textContent = filled.length;
+      if(statCategories) statCategories.textContent = new Set(filled.map(item => item.category)).size;
+    }
+
+    function renderSummaryBar(){
+      const box = document.getElementById('summaryBar');
+      if(!box) return;
+      const total = allFilledPosts().length;
+      const current = filledPostsByCategory(currentTab).length;
+      const keyword = document.getElementById('searchInput').value.trim();
+      const author = document.getElementById('authorFilter').value.trim();
+      box.innerHTML = `
+        <div class="summary-chip">Tổng tài liệu: ${total}</div>
+        <div class="summary-chip">Mục ${escapeHtml(currentTab)}: ${current}</div>
+        <div class="summary-chip">Tìm kiếm: ${escapeHtml(keyword || 'Chưa nhập')}</div>
+        <div class="summary-chip">Tác giả / nguồn: ${escapeHtml(author || 'Tất cả')}</div>
+      `;
+    }
+
+    function renderTabs(){
+      const box = document.getElementById('tabs');
+      box.innerHTML = categories.map(cat => `
+        <button class="tab-btn ${cat===currentTab ? 'active':''}" onclick="setTab('${escapeJs(cat)}')">${cat}</button>
+      `).join('');
+    }
+
+    function setTab(category){
+      currentTab = category;
+      renderTabs();
+      renderAuthorFilter();
+      renderSummaryBar();
+      renderGrid();
+    }
+
+    function renderAuthorFilter(){
+      const currentValue = document.getElementById('authorFilter').value;
+      const authors = [...new Set(filledPostsByCategory(currentTab)
+        .map(item => (item.author || '').trim())
+        .filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
+      const select = document.getElementById('authorFilter');
+      select.innerHTML = '<option value="">Lọc theo tác giả / nguồn</option>' + authors.map(author => `<option value="${escapeHtml(author)}">${escapeHtml(author)}</option>`).join('');
+      if(authors.includes(currentValue)) select.value = currentValue;
+    }
+
+    function sortItems(items){
+      const sortType = document.getElementById('sortSelect').value;
+      const cloned = [...items];
+      if(sortType === 'title-asc'){
+        cloned.sort((a,b)=>a.title.localeCompare(b.title,'vi'));
+      }else if(sortType === 'title-desc'){
+        cloned.sort((a,b)=>b.title.localeCompare(a.title,'vi'));
+      }else{
+        cloned.sort((a,b)=>a.slot-b.slot);
+      }
+      return cloned;
+    }
+
+    function renderGrid(){
+      const title = document.getElementById('sectionTitle');
+      title.textContent = currentTab;
+
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const authorFilter = document.getElementById('authorFilter').value.trim().toLowerCase();
+
+      let items = filledPostsByCategory(currentTab);
+      if(keyword){
+        items = items.filter(item => [item.title,item.author,item.desc,item.category,item.price,item.pages,item.size].join(' ').toLowerCase().includes(keyword));
+      }
+      if(authorFilter){
+        items = items.filter(item => (item.author || '').trim().toLowerCase() === authorFilter);
+      }
+      items = sortItems(items);
+
+      const grid = document.getElementById('grid');
+      const sectionSub = document.getElementById('sectionSub');
+      sectionSub.textContent = items.length ? `Hiện có ${items.length} tài liệu trong mục này.` : 'Chưa có tài liệu phù hợp với bộ lọc hiện tại.';
+
+      if(!items.length){
+        grid.innerHTML = `<div class="empty">Chưa có tài liệu trong mục này.</div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => renderCard(item)).join('');
+    }
+
+    function renderCard(item){
+      const cover = item.cover
+        ? `<img src="${item.cover}" alt="${escapeHtml(item.title)}">`
+        : `<div class="ph">${escapeHtml(item.category)}<br>Ô số ${item.slot}</div>`;
+      const previewImages = normalizePreviewImages(item.previewImages);
+      const previewStrip = previewImages.some(Boolean)
+        ? `
+          <div class="preview-note">3 hình xem trước</div>
+          <div class="preview-strip">
+            ${previewImages.map((src, index) => src
+              ? `<button type="button" class="preview-thumb" onclick="openPreviewModal('${escapeJs(src)}','${escapeJs(item.title)}','${index + 1}')"><img src="${src}" alt="${escapeHtml(item.title)} - xem trước ${index + 1}"></button>`
+              : `<div class="preview-thumb" style="cursor:default;opacity:.45;"><div class="ph" style="font-size:12px;">Chưa có
+ảnh ${index + 1}</div></div>`
+            ).join('')}
+          </div>`
+        : '';
+
+      return `
+        <article class="card">
+          <div class="cover">${cover}</div>
+          <div class="card-body">
+            <div class="top-badges">
+              <span class="badge">${escapeHtml(item.category)}</span>
+              <span class="badge slot-badge">Ô số ${item.slot}</span>
+            </div>
+            <h3 class="title">${escapeHtml(item.title)}</h3>
+            <div class="meta">${escapeHtml(item.author || 'Nhà sách Ngô Bảo')}${item.pages ? ' • ' + escapeHtml(item.pages) + ' trang' : ''}${item.size ? ' • ' + escapeHtml(item.size) : ''}</div>
+            <div class="desc">${escapeHtml(item.desc || '')}</div>
+            ${previewStrip}
+            <div class="price">${escapeHtml(item.price || 'Liên hệ')}</div>
+            <div class="actions">
+              <button type="button" class="btn btn-primary" onclick="openBuyModal('${escapeJs(item.category)}', ${item.slot})">Mua PDF</button>
+              ${item.previewLink ? `<a class="btn btn-secondary" href="${item.previewLink}" target="_blank" rel="noopener">Xem thử</a>` : ''}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function openBuyModal(category, number){
+      const item = slots[slotId(category, number)];
+      if(!item || !item.title.trim()) return;
+      const phoneDigits = (contact.phone || '').replace(/\D/g,'');
+      const zaloLink = phoneDigits ? `https://zalo.me/${phoneDigits}` : '#';
+      const emailSubject = encodeURIComponent('Mua tài liệu: ' + item.title);
+      const emailBody = encodeURIComponent(`Tôi đã chuyển khoản mua tài liệu: ${item.title}. Vui lòng gửi file giúp tôi.`);
+      document.getElementById('buyContent').innerHTML = `
+        <div class="bank-box">
+          <div class="bank-row"><strong>Tài liệu:</strong> ${escapeHtml(item.title)}</div>
+          <div class="bank-row"><strong>Giá:</strong> ${escapeHtml(item.price || 'Liên hệ')}</div>
+          <div class="bank-row"><strong>Ngân hàng:</strong> ${escapeHtml(contact.bankName)}</div>
+          <div class="bank-row"><strong>Số tài khoản:</strong> ${escapeHtml(contact.bankNumber)}</div>
+          <div class="bank-row"><strong>Chủ tài khoản:</strong> ${escapeHtml(contact.bankOwner)}</div>
+          <div class="bank-row"><strong>Nội dung chuyển khoản:</strong> MUA ${escapeHtml(item.title).toUpperCase().slice(0,36)}</div>
+        </div>
+        <div class="note">Sau khi chuyển khoản, vui lòng gửi biên lai qua Zalo hoặc Email để nhận file. Cơ chế này được giữ nguyên như file gốc của bạn.</div>
+        <div class="contact-buttons">
+          <button class="btn btn-gold" type="button" onclick="copyBankInfo('${escapeJs(item.title)}')">Sao chép thông tin CK</button>
+          <a class="btn btn-primary" href="${zaloLink}" target="_blank" rel="noopener">Gửi biên lai qua Zalo</a>
+          <a class="btn btn-secondary" href="mailto:${contact.email}?subject=${emailSubject}&body=${emailBody}">Gửi biên lai qua Email</a>
+        </div>
+      `;
+      document.getElementById('buyModal').classList.add('show');
+    }
+
+    function copyBankInfo(title){
+      const text = `Tài liệu: ${title}\nNgân hàng: ${contact.bankName}\nSố tài khoản: ${contact.bankNumber}\nChủ tài khoản: ${contact.bankOwner}`;
+      navigator.clipboard.writeText(text).then(()=>showToast('Đã sao chép thông tin chuyển khoản'));
+    }
+
+    function closeBuyModal(){
+      document.getElementById('buyModal').classList.remove('show');
+    }
+
+    function openAdminLogin(){
+      document.body.classList.add('admin-open');
+      document.getElementById('adminLoginModal').classList.add('show');
+      document.getElementById('adminPasswordInput').value = '';
+      setTimeout(()=>document.getElementById('adminPasswordInput').focus(),50);
+    }
+
+    function closeAdminLogin(){
+      document.getElementById('adminLoginModal').classList.remove('show');
+      if(!document.getElementById('adminPanelModal').classList.contains('show')){
+        document.body.classList.remove('admin-open');
+      }
+    }
+
+    function submitAdminLogin(){
+      const v = document.getElementById('adminPasswordInput').value;
+      if(v !== getAdminPassword()){
+        showToast('Mật khẩu chưa đúng');
+        return;
+      }
+      closeAdminLogin();
+      openAdminPanel();
+    }
+
+    function openAdminPanel(){
+      document.body.classList.add('admin-open');
+      document.getElementById('adminPanelModal').classList.add('show');
+      fillSelectors();
+      fillContactForm();
+      document.getElementById('newAdminPassword').value = '';
+      loadSelectedSlot();
+      renderAdminList();
+    }
+
+    function closeAdminPanel(){
+      document.getElementById('adminPanelModal').classList.remove('show');
+      document.body.classList.remove('admin-open');
+    }
+
+    function fillSelectors(){
+      const catSel = document.getElementById('slotCategory');
+      catSel.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+
+      const numSel = document.getElementById('slotNumber');
+      numSel.innerHTML = Array.from({length:SLOTS_PER_CATEGORY}, (_,i)=>i+1)
+        .map(n => `<option value="${n}">Ô số ${n}</option>`).join('');
+
+      if(!catSel.value) catSel.value = categories[0];
+      if(!numSel.value) numSel.value = '1';
+
+      catSel.onchange = loadSelectedSlot;
+      numSel.onchange = loadSelectedSlot;
+    }
+
+    function currentSlotKey(){
+      const cat = document.getElementById('slotCategory').value;
+      const num = document.getElementById('slotNumber').value;
+      return slotId(cat, Number(num));
+    }
+
+    function loadSelectedSlot(){
+      const item = slots[currentSlotKey()];
+      if(!item) return;
+
+      document.getElementById('postTitle').value = item.title || '';
+      document.getElementById('postAuthor').value = item.author || '';
+      document.getElementById('postPrice').value = item.price || '';
+      document.getElementById('postPages').value = item.pages || '';
+      document.getElementById('postSize').value = item.size || '';
+      document.getElementById('postDesc').value = item.desc || '';
+      document.getElementById('postCoverUrl').value = item.cover || '';
+      document.getElementById('postPreviewUrl1').value = (item.previewImages && item.previewImages[0]) || '';
+      document.getElementById('postPreviewUrl2').value = (item.previewImages && item.previewImages[1]) || '';
+      document.getElementById('postPreviewUrl3').value = (item.previewImages && item.previewImages[2]) || '';
+      document.getElementById('postPreviewLink').value = item.previewLink || '';
+      document.getElementById('postFileLink').value = item.fileLink || '';
+      renderCurrentCover(item.cover, item.title);
+      renderCurrentPreviews(normalizePreviewImages(item.previewImages), item.title);
+    }
+
+    function renderCurrentCover(cover, title){
+      const box = document.getElementById('currentCover');
+      if(cover){
+        box.innerHTML = `<img src="${cover}" alt="${escapeHtml(title || 'Ảnh bìa hiện tại')}">`;
+      }else{
+        box.innerHTML = '<span>Chưa có ảnh bìa</span>';
+      }
+    }
+
+    function renderCurrentPreviews(previews, title){
+      const box = document.getElementById('currentPreviewGrid');
+      box.innerHTML = previews.map((src, index) => src
+        ? `<div class="current-preview"><img src="${src}" alt="${escapeHtml(title || 'Ảnh xem trước')} ${index + 1}"></div>`
+        : `<div class="current-preview"><span>Chưa có ảnh xem trước ${index + 1}</span></div>`
+      ).join('');
+    }
+
+    function normalizeImageUrl(url){
+      const raw = (url || '').trim();
+      if(!raw) return '';
+      if(/^data:image\//i.test(raw)) return raw;
+      if(/^https?:\/\//i.test(raw)) return raw;
+      if(/^images\//i.test(raw) || /^\.\//.test(raw) || /^\//.test(raw)) return raw;
+      return `images/${raw.replace(/^\.\//, '')}`;
+    }
+
+
+    async function saveSlot(){
+      const key = currentSlotKey();
+      const item = slots[key];
+      item.title = document.getElementById('postTitle').value.trim();
+      item.author = document.getElementById('postAuthor').value.trim();
+      item.price = document.getElementById('postPrice').value.trim();
+      item.pages = document.getElementById('postPages').value.trim();
+      item.size = document.getElementById('postSize').value.trim();
+      item.desc = document.getElementById('postDesc').value.trim();
+      item.previewLink = document.getElementById('postPreviewLink').value.trim();
+      item.fileLink = document.getElementById('postFileLink').value.trim();
+
+      item.cover = normalizeImageUrl(document.getElementById('postCoverUrl').value);
+      item.previewImages = [
+        normalizeImageUrl(document.getElementById('postPreviewUrl1').value),
+        normalizeImageUrl(document.getElementById('postPreviewUrl2').value),
+        normalizeImageUrl(document.getElementById('postPreviewUrl3').value)
+      ];
+      slots[key] = item;
+      saveSlots();
+      renderCurrentCover(item.cover, item.title);
+      renderCurrentPreviews(item.previewImages, item.title);
+      refreshAllViews();
+      renderAdminList();
+      showToast('Đã lưu ô này');
+    }
+
+    function clearCurrentSlot(){
+      const key = currentSlotKey();
+      const item = slots[key];
+      item.title = '';
+      item.author = '';
+      item.price = '';
+      item.pages = '';
+      item.size = '';
+      item.desc = '';
+      item.cover = '';
+      item.previewImages = ['', '', ''];
+      item.previewLink = '';
+      item.fileLink = '';
+      slots[key] = item;
+      saveSlots();
+      loadSelectedSlot();
+      refreshAllViews();
+      renderAdminList();
+      showToast('Đã xóa nội dung ô này');
+    }
+
+    function duplicateCurrentToEmptySlot(){
+      const source = slots[currentSlotKey()];
+      if(!source || !source.title.trim()){
+        showToast('Ô hiện tại chưa có dữ liệu để nhân bản');
+        return;
+      }
+      const target = Object.values(slots).find(item => item.category === source.category && !item.title.trim() && item.slot !== source.slot);
+      if(!target){
+        showToast('Không còn ô trống trong danh mục này');
+        return;
+      }
+      slots[slotId(target.category, target.slot)] = {
+        ...target,
+        title: source.title,
+        author: source.author,
+        price: source.price,
+        pages: source.pages,
+        size: source.size,
+        desc: source.desc,
+        cover: source.cover,
+        previewImages: normalizePreviewImages(source.previewImages),
+        previewLink: source.previewLink,
+        fileLink: source.fileLink
+      };
+      saveSlots();
+      refreshAllViews();
+      renderAdminList();
+      showToast(`Đã nhân bản sang ô số ${target.slot}`);
+    }
+
+    function fillContactForm(){
+      document.getElementById('contactPhone').value = contact.phone || '';
+      document.getElementById('contactEmail').value = contact.email || '';
+      document.getElementById('contactBankName').value = contact.bankName || '';
+      document.getElementById('contactBankNumber').value = contact.bankNumber || '';
+      document.getElementById('contactBankOwner').value = contact.bankOwner || '';
+    }
+
+    function saveContact(){
+      contact = {
+        phone: document.getElementById('contactPhone').value.trim(),
+        email: document.getElementById('contactEmail').value.trim(),
+        bankName: document.getElementById('contactBankName').value.trim(),
+        bankNumber: document.getElementById('contactBankNumber').value.trim(),
+        bankOwner: document.getElementById('contactBankOwner').value.trim()
+      };
+      saveContactStorage();
+      renderFooterInfo();
+      showToast('Đã lưu thông tin liên hệ');
+    }
+
+    function saveAdminPassword(){
+      const value = document.getElementById('newAdminPassword').value.trim();
+      if(!value){
+        showToast('Bạn chưa nhập mật khẩu mới');
+        return;
+      }
+      setAdminPassword(value);
+      document.getElementById('newAdminPassword').value = '';
+      showToast('Đã đổi mật khẩu quản trị');
+    }
+
+    function renderAdminList(){
+      const list = document.getElementById('adminList');
+      const filled = Object.values(slots)
+        .filter(item => item.title.trim())
+        .sort((a,b)=>a.category.localeCompare(b.category,'vi') || a.slot - b.slot);
+
+      if(!filled.length){
+        list.innerHTML = `<div class="hint">Chưa có ô nào có nội dung.</div>`;
+        return;
+      }
+
+      list.innerHTML = filled.map(item => `
+        <div class="mini-item">
+          <div class="mini-title">${escapeHtml(item.title)}</div>
+          <div class="mini-meta">${escapeHtml(item.category)} • Ô số ${item.slot}</div>
+          <div class="mini-buttons">
+            <button type="button" class="btn btn-secondary" onclick="jumpToSlot('${escapeJs(item.category)}', ${item.slot})">Mở ô này</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function jumpToSlot(category, number){
+      document.getElementById('slotCategory').value = category;
+      document.getElementById('slotNumber').value = String(number);
+      loadSelectedSlot();
+      showToast('Đã mở đúng ô cần sửa');
+    }
+
+    function exportDataBackup(){
+      const payload = {
+        slots,
+        contact,
+        password: getAdminPassword(),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'nhasach-ngobao-backup.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Đã xuất file sao lưu');
+    }
+
+    async function importDataBackup(event){
+      const file = event.target.files && event.target.files[0];
+      if(!file) return;
+      try{
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        if(parsed.slots && typeof parsed.slots === 'object'){
+          slots = {...createDefaultSlots(), ...parsed.slots};
+          Object.keys(slots).forEach(key => {
+            slots[key] = {...createDefaultSlots()[key], ...slots[key], previewImages: normalizePreviewImages(slots[key].previewImages)};
+          });
+          saveSlots();
+        }
+        if(parsed.contact && typeof parsed.contact === 'object'){
+          contact = {...defaultContact, ...parsed.contact};
+          saveContactStorage();
+        }
+        if(parsed.password && typeof parsed.password === 'string'){
+          setAdminPassword(parsed.password);
+        }
+        fillContactForm();
+        loadSelectedSlot();
+        refreshAllViews();
+        renderAdminList();
+        renderFooterInfo();
+        showToast('Đã nhập lại dữ liệu sao lưu');
+      }catch(error){
+        console.error(error);
+        showToast('File sao lưu không hợp lệ');
+      }finally{
+        event.target.value = '';
+      }
+    }
+
+    function renderFooterInfo(){
+      document.getElementById('fphone').textContent = contact.phone || '';
+      document.getElementById('fmail').textContent = contact.email || '';
+      document.getElementById('fbank').textContent = contact.bankName || '';
+      document.getElementById('fstk').textContent = contact.bankNumber || '';
+      document.getElementById('fowner').textContent = contact.bankOwner || '';
+
+      const phone=(contact.phone||'').replace(/\D/g,'');
+      const zalo = document.getElementById('zaloFloat');
+      const heroZalo = document.getElementById('heroZaloBtn');
+      if(phone){
+        const link='https://zalo.me/'+phone;
+        if(zalo) zalo.href=link;
+        if(heroZalo) heroZalo.href=link;
+      }else{
+        if(zalo) zalo.href='#';
+        if(heroZalo) heroZalo.href='#';
+      }
+    }
+
+    function openAbout(){
+      document.getElementById('aboutModal').classList.add('show');
+    }
+
+    function closeAbout(){
+      document.getElementById('aboutModal').classList.remove('show');
+    }
+
+    function refreshAllViews(){
+      updateStats();
+      renderAuthorFilter();
+      renderSummaryBar();
+      renderGrid();
+    }
+
+    function fileToDataUrl(file){
+      return new Promise((resolve,reject)=>{
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function escapeHtml(value){
+      return String(value || '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#39;');
+    }
+
+    function escapeJs(value){
+      return String(value || '').replaceAll('\\','\\\\').replaceAll("'","\\'");
+    }
+
+    document.getElementById('searchInput').addEventListener('input', ()=>{
+      renderSummaryBar();
+      renderGrid();
+    });
+    document.getElementById('authorFilter').addEventListener('change', ()=>{
+      renderSummaryBar();
+      renderGrid();
+    });
+    document.getElementById('sortSelect').addEventListener('change', renderGrid);
+    document.getElementById('hiddenTrigger').addEventListener('click', openAdminLogin);
+
+    document.getElementById('siteTitle').addEventListener('click', ()=>{
+      titleClicks += 1;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(()=>titleClicks = 0, 1200);
+      if(titleClicks >= 5){
+        titleClicks = 0;
+        openAdminLogin();
+      }
+    });
+
+    document.getElementById('buyModal').addEventListener('click', e=>{
+      if(e.target.id === 'buyModal') closeBuyModal();
+    });
+    document.getElementById('adminLoginModal').addEventListener('click', e=>{
+      if(e.target.id === 'adminLoginModal') closeAdminLogin();
+    });
+    document.getElementById('adminPanelModal').addEventListener('click', e=>{
+      if(e.target.id === 'adminPanelModal') closeAdminPanel();
+    });
+    document.getElementById('aboutModal').addEventListener('click', e=>{
+      if(e.target.id === 'aboutModal') closeAbout();
+    });
+    document.getElementById('previewModal').addEventListener('click', e=>{
+      if(e.target.id === 'previewModal') closePreviewModal();
+    });
+
+    document.addEventListener('keydown', e=>{
+      if(e.key === 'Escape'){
+        closeBuyModal();
+        closeAdminLogin();
+        closeAdminPanel();
+        closeAbout();
+        closePreviewModal();
+      }
+      if(e.key === 'Enter' && document.getElementById('adminLoginModal').classList.contains('show')){
+        submitAdminLogin();
+      }
+    });
+
+    async function initializeStorefront(){
+      const synced = await pullRemoteData();
+      if(synced){
+        slots = loadSlots();
+        contact = loadContact();
+      }
+      renderFooterInfo();
+      updateStats();
+      renderTabs();
+      renderAuthorFilter();
+      renderSummaryBar();
+      renderGrid();
+    }
+
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initializeStorefront);
+    }else{
+      initializeStorefront();
+    }
+  </script>
 </body>
 </html>
